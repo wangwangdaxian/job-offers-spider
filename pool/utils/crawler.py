@@ -1,7 +1,8 @@
 import time
 
-import requests
 from pyquery import PyQuery as pq
+
+from pool.utils import request
 
 
 class ProxyMetaclass(type):
@@ -34,9 +35,9 @@ class Crawler(object, metaclass=ProxyMetaclass):
         for url in urls:
             time.sleep(2)
             print('Crawling', url)
-            html = requests.get(url)
+            html = request.get_page(url)
             if html:
-                doc = pq(html.text)
+                doc = pq(html)
                 trs = doc('#list table tr:gt(0)').items()
                 for tr in trs:
                     ip = tr('td[data-title="IP"]').text()
