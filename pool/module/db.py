@@ -2,14 +2,14 @@ from random import choice
 
 import redis
 
-from pool.module.errors import PoolEmptyError
+from pool.utils.errors import PoolEmptyError
 
 MAX_SCORE = 100
 MIN_SCORE = 0
 INITIAL_SCORE = 10
 REDIS_HOST = ''
 REDIS_PORT = ''
-REDIS_PASSWORD = ''
+REDIS_PASSWORD = 'reggie'
 REDIS_KEY = 'proxies'
 
 
