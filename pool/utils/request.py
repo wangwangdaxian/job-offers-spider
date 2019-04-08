@@ -14,7 +14,7 @@ def get_page(url):
         response = requests.get(url, headers=headers)
         print('抓取成功', url, response.status_code)
         if response.status_code == 200:
-            return response.text
+            return response
     except ConnectionError:
         print('抓取失败', url)
         return None
