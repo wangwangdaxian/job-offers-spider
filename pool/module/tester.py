@@ -3,6 +3,7 @@ import time
 
 import aiohttp
 from aiohttp import ClientError, ClientConnectionError
+from asyncio import TimeoutError
 
 from pool.module.db import RedisClient
 
@@ -28,13 +29,13 @@ class Tester(object):
                     proxy = proxy.decode('utf-8')
                 real_proxy = 'http://' + proxy
                 print('正在测试', proxy)
-                async with session.get(TEST_URL, proxy=real_proxy, timeout=15) as response:
+                async with session.get(TEST_URL, proxy=real_proxy, timeout=10) as response:
                     if response.status in VALID_STATUS_CODES:
                         self.redis.max(proxy)
                         print('代理可用', proxy)
                     else:
                         self.redis.decrease(proxy)
-                        print('请求响应吗不合法', proxy)
+                        print('请求响应码不合法', proxy)
             except (ClientError, ClientConnectionError, TimeoutError, AttributeError):
                 self.redis.decrease(proxy)
                 print('代理请求失败', proxy)
