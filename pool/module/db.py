@@ -1,3 +1,4 @@
+import re
 from random import choice
 
 import redis
@@ -7,8 +8,8 @@ from pool.utils.errors import PoolEmptyError
 MAX_SCORE = 100
 MIN_SCORE = 0
 INITIAL_SCORE = 10
-REDIS_HOST = ''
-REDIS_PORT = ''
+REDIS_HOST = '127.0.0.1'
+REDIS_PORT = '6379'
 REDIS_PASSWORD = 'reggie'
 REDIS_KEY = 'proxies'
 
@@ -31,8 +32,16 @@ class RedisClient(object):
         :param score: 分数
         :return: 添加结果
         """
+        if not re.match(r'\d+\.\d+\.\d+\.\d+:\d+', proxy):
+            print('代理不符合规范', proxy, '丢弃')
+            return
         if not self.db.zscore(REDIS_KEY, proxy):
-            return self.db.zadd(REDIS_KEY, score, proxy)
+            result = self.db.zadd(REDIS_KEY, {proxy: score})
+            if result:
+                print('添加代理到Redis数据库', proxy)
+            return result
+        else:
+            print('代理已存在', proxy)
 
     def random(self):
         """
@@ -58,8 +67,8 @@ class RedisClient(object):
         """
         score = self.db.zscore(REDIS_KEY, proxy)
         if score and score > MIN_SCORE:
-            print('代理', proxy, '当前分数', score, '减一')
-            return self.db.zincrby(REDIS_KEY, proxy, -1)
+            print('代理', proxy, '当前分数', score, '减二')
+            return self.db.zincrby(REDIS_KEY, -2, proxy)
         else:
             print('代理', proxy, '当前分数', score, '移除')
             return self.db.zrem(REDIS_KEY, proxy)
@@ -79,7 +88,7 @@ class RedisClient(object):
         :return: 设置结果
         """
         print('代理', proxy, '可用，设置为', MAX_SCORE)
-        return self.db.zadd(REDIS_KEY, MAX_SCORE, proxy)
+        return self.db.zadd(REDIS_KEY, {proxy: MAX_SCORE})
 
     def count(self):
         """
