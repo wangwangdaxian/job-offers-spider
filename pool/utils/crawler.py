@@ -5,19 +5,16 @@ from pyquery import PyQuery as pq
 from pool.utils import request
 
 
-class ProxyMetaclass(type):
-    def __new__(mcs, name, bases, attrs):
+class Crawler(object):
+    def __init__(self):
         count = 0
-        attrs['__CrawlFunc__'] = []
-        for k, v in attrs.items():
-            if 'crawl_' in k:
-                attrs['__CrawlFunc__'].append(k)
+        self.__CrawlFunc__ = []
+        for method in dir(self):
+            if 'crawl_' in method:
+                self.__CrawlFunc__.append(method)
                 count += 1
-        attrs['__CrawlFuncCount__'] = count
-        return type.__new__(mcs, name, bases, attrs)
+        self.__CrawFuncCount__ = count
 
-
-class Crawler(object, metaclass=ProxyMetaclass):
     def get_proxies(self, callback):
         proxies = []
         for proxy in eval("self.{}()".format(callback)):
@@ -25,21 +22,72 @@ class Crawler(object, metaclass=ProxyMetaclass):
             proxies.append(proxy)
         return proxies
 
-    def crwal_kuaidaili(self, page_count=10):
+    def crawl_kuaidaili(self, page_count=2):
         """
-        获取快代理
+        获取快代理的免费代理
         :return: 代理
         """
         start_url = 'https://www.kuaidaili.com/free/inha/{}/'
         urls = [start_url.format(page) for page in range(1, page_count + 1)]
         for url in urls:
-            time.sleep(2)
+            time.sleep(3)
             print('Crawling', url)
             html = request.get_page(url)
             if html:
-                doc = pq(html)
+                doc = pq(html.text)
                 trs = doc('#list table tr:gt(0)').items()
                 for tr in trs:
                     ip = tr('td[data-title="IP"]').text()
                     port = tr('td[data-title="PORT"]').text()
+                    yield ':'.join([ip, port])
+
+    def crawl_qingting(self):
+        """
+        获取蜻蜓代理的免费代理
+        :return: 代理
+        """
+        start_url = 'http://proxy.horocn.com/api/free-proxy?app_id={}&format=text'
+        app_id = '163016700225102919402'
+        url = start_url.format(app_id)
+        print('Crawling', url)
+        html = request.get_page(url)
+        proxies = html.text.split('\n')
+        for proxy in proxies:
+            yield proxy
+
+    def crawl_ashtwo(self):
+        """
+        获取ashtwo的免费代理
+        :return: 代理
+        """
+        start_url = 'http://p.ashtwo.cn/'
+        print('Crawling', start_url)
+        proxies = []
+        for i in range(0, 20):
+            time.sleep(0.5)
+            html = request.get_page(start_url)
+            doc = pq(html.text)
+            proxy = doc('body p').text()
+            proxies.append(proxy)
+        for proxy in proxies:
+            yield proxy
+
+    def crawl_wuyou(self):
+        """
+        获取无忧代理的免费代理
+        :return: 代理
+        """
+        start_url = 'http://www.data5u.com/free/{}/index.shtml'
+        types = ['gngn', 'gnpt', 'gwgn', 'gwpt']
+        urls = [start_url.format(tp) for tp in types]
+        for url in urls:
+            time.sleep(1)
+            print('Crawling', url)
+            html = request.get_page(url)
+            if html:
+                doc = pq(html.text)
+                uls = doc('.wlist .l2').items()
+                for ul in uls:
+                    ip = ul('span:first-child li:first-child').text()
+                    port = ul('.port').text()
                     yield ':'.join([ip, port])
