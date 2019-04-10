@@ -1,9 +1,11 @@
 # 代理配置
 PROXY_POOL_URL = 'http://127.0.0.1:5000/random'
 
-# 待爬取网站配置
+# 请求配置
 INDEX_URL = 'https://www.zhipin.com/?city=c101020100'
 BASE_URL = 'https://www.zhipin.com'
+MAX_FAILED_TIME = 50
+VALID_STATUSES = [200]
 
 # Redis数据库配置
 REDIS_HOST = '127.0.0.1'
