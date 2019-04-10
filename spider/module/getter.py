@@ -1,7 +1,7 @@
 import requests
 from requests import ReadTimeout
 
-from spider.module.proxy.myproxy import MyProxy
+from spider.module.myproxy import MyProxy
 
 
 class Getter:
