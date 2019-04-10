@@ -22,7 +22,7 @@ class Crawler(object):
             proxies.append(proxy)
         return proxies
 
-    def crawl_kuaidaili(self, page_count=50):
+    def crawl_kuaidaili(self, page_count=2):
         """
         获取快代理的免费代理
         :return: 代理
