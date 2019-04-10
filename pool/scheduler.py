@@ -5,10 +5,10 @@ from pool.module.api import app
 from pool.module.getter import Getter
 from pool.module.tester import Tester
 
-TESTER_CYCLE = 20
-GETTER_CYCLE = 20
+TESTER_CYCLE = 60
+GETTER_CYCLE = 60
 GETTER_ENABLED = True
-TESTER_ENABLED = True
+TESTER_ENABLED = False
 API_ENABLED = True
 
 API_HOST = '127.0.0.1'

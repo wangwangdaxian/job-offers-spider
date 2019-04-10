@@ -22,7 +22,7 @@ class Crawler(object):
             proxies.append(proxy)
         return proxies
 
-    def crawl_kuaidaili(self, page_count=2):
+    def crawl_kuaidaili(self, page_count=50):
         """
         获取快代理的免费代理
         :return: 代理
@@ -39,6 +39,25 @@ class Crawler(object):
                 for tr in trs:
                     ip = tr('td[data-title="IP"]').text()
                     port = tr('td[data-title="PORT"]').text()
+                    yield ':'.join([ip, port])
+
+    def crawl_xici(self, page_count=2):
+        """
+        获取西刺代理的免费代理
+        :return: 代理
+        """
+        start_url = 'https://www.xicidaili.com/nn/{}'
+        urls = [start_url.format(page) for page in range(1, page_count + 1)]
+        for url in urls:
+            time.sleep(3)
+            print('Crawling', url)
+            html = request.get_page(url)
+            if html:
+                doc = pq(html.text)
+                trs = doc('#ip_list tr:gt(1)').items()
+                for tr in trs:
+                    ip = tr('td:nth-child(2)').text()
+                    port = tr('td:nth-child(3)').text()
                     yield ':'.join([ip, port])
 
     def crawl_qingting(self):
@@ -78,7 +97,7 @@ class Crawler(object):
         :return: 代理
         """
         start_url = 'http://www.data5u.com/free/{}/index.shtml'
-        types = ['gngn', 'gnpt', 'gwgn', 'gwpt']
+        types = ['gngn', 'gwgn']
         urls = [start_url.format(tp) for tp in types]
         for url in urls:
             time.sleep(1)
