@@ -22,7 +22,7 @@ class Crawler(object):
             proxies.append(proxy)
         return proxies
 
-    def crawl_kuaidaili(self, page_count=2):
+    def qcrawl_kuaidaili(self, page_count=2):
         """
         获取快代理的免费代理
         :return: 代理
@@ -41,7 +41,7 @@ class Crawler(object):
                     port = tr('td[data-title="PORT"]').text()
                     yield ':'.join([ip, port])
 
-    def crawl_xici(self, page_count=2):
+    def qcrawl_xici(self, page_count=2):
         """
         获取西刺代理的免费代理
         :return: 代理
@@ -60,7 +60,7 @@ class Crawler(object):
                     port = tr('td:nth-child(3)').text()
                     yield ':'.join([ip, port])
 
-    def crawl_qingting(self):
+    def qcrawl_qingting(self):
         """
         获取蜻蜓代理的免费代理
         :return: 代理
@@ -74,7 +74,7 @@ class Crawler(object):
         for proxy in proxies:
             yield proxy
 
-    def crawl_ashtwo(self):
+    def qcrawl_ashtwo(self):
         """
         获取ashtwo的免费代理
         :return: 代理
@@ -91,7 +91,7 @@ class Crawler(object):
         for proxy in proxies:
             yield proxy
 
-    def crawl_wuyou(self):
+    def qcrawl_wuyou(self):
         """
         获取无忧代理的免费代理
         :return: 代理
@@ -110,3 +110,15 @@ class Crawler(object):
                     ip = ul('span:first-child li:first-child').text()
                     port = ul('.port').text()
                     yield ':'.join([ip, port])
+
+    def crawl_qt(self):
+        """
+        获取蜻蜓代理的私密代理
+        :return: 代理
+        """
+        url = 'https://proxy.horocn.com/api/proxies?order_id=HXOH1630506293222425&num=10&format=text&line_separator=win'
+        print('Crawling', url)
+        html = request.get_page(url)
+        proxies = html.text.split('\n')
+        for proxy in proxies:
+            yield proxy
