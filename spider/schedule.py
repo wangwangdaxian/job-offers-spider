@@ -35,21 +35,25 @@ class Schedule:
         """
         while not self.queue.empty():
             myrequest = self.queue.get()
-            callback = myrequest.callback
-            print('Schedule', myrequest.url)
-            response = self.getter.request(myrequest)
-            if response and response.status_code in VALID_STATUSES:
-                results = list(callback(response))
-                if results:
-                    for result in results:
-                        print('New Result', type(result))
-                        if isinstance(result, MyRequest):
-                            self.queue.put(result)
-                        if isinstance(result, dict):
-                            self.db.insert(result)
+            try:
+                callback = myrequest.callback
+                print('Schedule', myrequest.url)
+                response = self.getter.request(myrequest)
+                if response and response.status_code in VALID_STATUSES:
+                    results = callback(response)
+                    if results:
+                        for result in results:
+                            print('New Result', type(result))
+                            if isinstance(result, MyRequest):
+                                self.queue.put(result)
+                            if isinstance(result, dict):
+                                self.db.insert(result)
+                    else:
+                        self.error(myrequest)
                 else:
                     self.error(myrequest)
-            else:
+            except Exception as e:
+                print('ERROR:', e.args)
                 self.error(myrequest)
 
     def run(self):
