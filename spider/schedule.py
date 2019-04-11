@@ -1,5 +1,3 @@
-import time
-
 from spider.config import INDEX_URL, MAX_FAILED_TIME, VALID_STATUSES
 from spider.module.getter import Getter
 
@@ -36,7 +34,6 @@ class Schedule:
         :return: None
         """
         while not self.queue.empty():
-            time.sleep(5)
             myrequest = self.queue.get()
             try:
                 callback = myrequest.callback
