@@ -1,15 +1,23 @@
 import asyncio
 import time
+from asyncio import TimeoutError
 
 import aiohttp
 from aiohttp import ClientError, ClientConnectionError
-from asyncio import TimeoutError
 
 from pool.module.db import RedisClient
 
 VALID_STATUS_CODES = [200]
 TEST_URL = 'https://www.zhipin.com/'
 BATCH_TEST_SIZE = 100
+
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                  'Chrome/73.0.3683.103 Safari/537.36 ',
+    'Accept-Language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Connection': 'close'
+}
 
 
 class Tester(object):
@@ -29,7 +37,7 @@ class Tester(object):
                     proxy = proxy.decode('utf-8')
                 real_proxy = 'http://' + proxy
                 print('正在测试', proxy)
-                async with session.get(TEST_URL, proxy=real_proxy, timeout=5) as response:
+                async with session.get(TEST_URL, headers=headers, proxy=real_proxy, timeout=5) as response:
                     if response.status in VALID_STATUS_CODES:
                         self.redis.max(proxy)
                         print('代理可用', proxy)
