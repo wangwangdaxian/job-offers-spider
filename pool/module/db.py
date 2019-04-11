@@ -7,7 +7,7 @@ from pool.utils.errors import PoolEmptyError
 
 MAX_SCORE = 10
 MIN_SCORE = 0
-INITIAL_SCORE = 2
+INITIAL_SCORE = 3
 REDIS_HOST = '127.0.0.1'
 REDIS_PORT = '6379'
 REDIS_PASSWORD = 'reggie'
