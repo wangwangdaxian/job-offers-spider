@@ -28,5 +28,5 @@ class Getter:
             resp = requests.get(url=my_request.url, timeout=my_request.timeout, headers=my_request.headers)
             return resp
         except (ConnectionError, ReadTimeout) as e:
-            print(e.args)
+            print('ERROR:', e.args)
             return False

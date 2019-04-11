@@ -9,13 +9,13 @@ VALID_STATUSES = [200]
 
 # Redis数据库配置
 REDIS_HOST = '127.0.0.1'
-REDIS_PORT = '6379'
+REDIS_PORT = 6379
 REDIS_PASSWORD = 'reggie'
 REDIS_KEY = 'zhiping'
 
 # Mysql数据库配置
 MYSQL_HOST = '127.0.0.1'
-MYSQL_PORT = '3306'
+MYSQL_PORT = 3306
 MYSQL_USER = 'root'
 MYSQL_PASSWORD = 'root'
 MYSQL_DATABASE = 'spider'

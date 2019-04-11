@@ -31,7 +31,7 @@ class Parser:
             if not re.match('.*?99/$', href):
                 for suffix in suffixes:
                     url = BASE_URL + href + suffix
-                    yield MyRequest(url, self.parse_detail)
+                    yield MyRequest(url, self.parse_detail, need_proxy=True)
 
     def parse_detail(self, response):
         """
@@ -41,8 +41,6 @@ class Parser:
         """
         doc = pq(response.text)
         ul = doc('.job-list ul')
-        if ul.length < 10:
-            return None
         lis = ul.items('.job-primary')
         for li in lis:
             primary = li('.info-primary')

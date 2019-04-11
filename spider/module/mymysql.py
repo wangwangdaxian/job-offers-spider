@@ -39,7 +39,7 @@ class MySQL:
             self.db.rollback()
 
     def create(self, schema=MYSQL_SCHEMA, table=MYSQL_TABLE):
-        sql_query = 'create table %s if not exists(%s)' % (table, schema)
+        sql_query = 'create table if not exists %s (%s) DEFAULT CHARSET=utf8 ' % (table, schema)
         try:
             self.cursor.execute(sql_query)
             self.db.commit()
