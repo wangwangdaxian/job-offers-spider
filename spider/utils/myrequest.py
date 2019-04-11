@@ -12,7 +12,7 @@ class MyRequest(Request):
                       'Chrome/73.0.3683.103 Safari/537.36 '
     }
 
-    def __init__(self, url, callback, method='GET', headers=None, need_proxy=False, fail_time=0, timeout=10):
+    def __init__(self, url, callback, method='GET', headers=None, need_proxy=False, fail_time=0, timeout=5):
         if headers is None:
             headers = self.DEFAULT_HEADERS
         Request.__init__(self, method, url, headers)

@@ -5,9 +5,9 @@ import redis
 
 from pool.utils.errors import PoolEmptyError
 
-MAX_SCORE = 100
+MAX_SCORE = 10
 MIN_SCORE = 0
-INITIAL_SCORE = 10
+INITIAL_SCORE = 2
 REDIS_HOST = '127.0.0.1'
 REDIS_PORT = '6379'
 REDIS_PASSWORD = 'reggie'
@@ -67,8 +67,8 @@ class RedisClient(object):
         """
         score = self.db.zscore(REDIS_KEY, proxy)
         if score and score > MIN_SCORE:
-            print('代理', proxy, '当前分数', score, '减二')
-            return self.db.zincrby(REDIS_KEY, -2, proxy)
+            print('代理', proxy, '当前分数', score, '减一')
+            return self.db.zincrby(REDIS_KEY, -1, proxy)
         else:
             print('代理', proxy, '当前分数', score, '移除')
             return self.db.zrem(REDIS_KEY, proxy)
