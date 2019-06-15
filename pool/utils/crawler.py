@@ -18,7 +18,7 @@ class Crawler(object):
             proxies.append(proxy)
         return proxies
 
-    # def qcrawl_kuaidaili(self, page_count=2):
+    # def crawl_kuaidaili(self, page_count=2):
     #     """
     #     获取快代理的免费代理
     #     :return: 代理
@@ -37,7 +37,7 @@ class Crawler(object):
     #                 port = tr('td[data-title="PORT"]').text()
     #                 yield ':'.join([ip, port])
     #
-    # def qcrawl_xici(self, page_count=2):
+    # def crawl_xici(self, page_count=2):
     #     """
     #     获取西刺代理的免费代理
     #     :return: 代理
@@ -56,7 +56,7 @@ class Crawler(object):
     #                 port = tr('td:nth-child(3)').text()
     #                 yield ':'.join([ip, port])
     #
-    # def qcrawl_qingting(self):
+    # def crawl_qingting(self):
     #     """
     #     获取蜻蜓代理的免费代理
     #     :return: 代理
@@ -70,7 +70,7 @@ class Crawler(object):
     #     for proxy in proxies:
     #         yield proxy
     #
-    # def qcrawl_ashtwo(self):
+    # def crawl_ashtwo(self):
     #     """
     #     获取ashtwo的免费代理
     #     :return: 代理
@@ -87,7 +87,7 @@ class Crawler(object):
     #     for proxy in proxies:
     #         yield proxy
     #
-    # def qcrawl_wuyou(self):
+    # def crawl_wuyou(self):
     #     """
     #     获取无忧代理的免费代理
     #     :return: 代理
